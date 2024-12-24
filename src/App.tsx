@@ -1,28 +1,29 @@
 import React from 'react';
-import { ProjectsTable } from './components/ProjectsTable';
+import { Table } from './components/Table';
+import { Pagination } from './components/Pagination';
 import { useProjects } from './hooks/useProjects';
 import { usePagination } from './hooks/usePagination';
-import { ErrorBoundary } from './components/ErrorBoundary';
+import './styles/App.css';
 
 export default function App() {
   const { projects, loading, error } = useProjects();
   const { currentPage, totalPages, paginatedItems, handlePageChange } = usePagination(projects);
-  console.log(projects)
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">Kickstarter Projects</h1>
-         <ErrorBoundary>
-          <ProjectsTable
-              projects={paginatedItems}
-              loading={loading}
-              error={error}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            /> 
-          </ErrorBoundary>
-      </div>
+    <div className="app">
+      <h1>Kickstarter Projects</h1>
+      <Table 
+        projects={paginatedItems}
+        loading={loading}
+        error={error}
+      />
+      {!loading && !error && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 }

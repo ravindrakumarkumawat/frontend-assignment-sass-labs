@@ -1,28 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Project } from '../types';
-import { fetchProjects } from '../utils/api';
+import { API_URL } from '../utils/constants';
 
-export function useProjects() {
+export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const getProjects = async () => {
+    const fetchProjects = async () => {
       try {
-        const data = await fetchProjects();
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+        const data = await response.json();
         setProjects(data);
-        setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        setProjects([]);
+        setError(err instanceof Error ? err.message : 'Failed to load projects');
       } finally {
         setLoading(false);
       }
     };
 
-    getProjects();
+    fetchProjects();
   }, []);
 
   return { projects, loading, error };
-}
+};
