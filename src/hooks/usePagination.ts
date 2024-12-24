@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { ITEMS_PER_PAGE } from '../constants/config';
 
-export function usePagination<T>(items: T[] = []) {  // Provide default empty array
+export function usePagination<T>(items: T[] = []) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = useMemo(() => 

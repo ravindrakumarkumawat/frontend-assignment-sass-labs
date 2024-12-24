@@ -9,7 +9,6 @@ export async function fetchProjects(): Promise<Project[]> {
       throw new Error('Failed to fetch projects');
     }
 
-    console.log(response)
     const data: ProjectsResponse = await response.json();
     
     if (!data || !Array.isArray(data)) {
